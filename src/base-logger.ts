@@ -39,11 +39,12 @@ export class BaseLogger<TLevel = number> {
     public readonly name?: string
     public readonly prettier: Prettier
 
+    public isEnabled: boolean
+    public level: number
+
     protected readonly errorLevels: number[]
     protected readonly timers = new Map<string, bigint>()
 
-    protected enabled: boolean
-    protected level: number
     protected filters: LogFilter[]
     protected transformers: LogTransformer[]
     protected transports: Transport[]
@@ -55,7 +56,7 @@ export class BaseLogger<TLevel = number> {
         this.levelResolver = options.levelResolver ?? ((level: any) => (isNumber(level) ? level : Number.NEGATIVE_INFINITY))
         this.errorLevels = unique([...errorLevels, this.levelResolver(fatalLevel)])
         this.fatalLevel = fatalLevel
-        this.enabled = enabled
+        this.isEnabled = enabled
         this.level = this.levelResolver(level)
         this.name = name
         this.filters = unique(filters)
@@ -73,11 +74,11 @@ export class BaseLogger<TLevel = number> {
     }
 
     public enable() {
-        return tap(this, () => (this.enabled = true))
+        return tap(this, () => (this.isEnabled = true))
     }
 
     public disable() {
-        return tap(this, () => (this.enabled = false))
+        return tap(this, () => (this.isEnabled = false))
     }
 
     public setLevel(level: TLevel) {
@@ -155,7 +156,7 @@ export class BaseLogger<TLevel = number> {
     public log(level: TLevel, message?: any, ...context: any[]) {
         const _level = this.levelResolver(level)
 
-        if (!this.enabled || _level < this.level || !this.filters.every((filter) => filter({ logger: this, level: _level, message, context }))) {
+        if (!this.isEnabled || _level < this.level || !this.filters.every((filter) => filter({ logger: this, level: _level, message, context }))) {
             return
         }
 
