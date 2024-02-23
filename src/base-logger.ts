@@ -234,9 +234,7 @@ export class BaseLogger<TLevel = number> {
             } else if (isObject(item)) {
                 if (isKeyOf(item, LOG_LAZY_CONTEXT)) {
                     entry.context.push(...item[LOG_LAZY_CONTEXT]())
-                }
-
-                if (isKeyOf(item, LOG_INPUT)) {
+                } else if (isKeyOf(item, LOG_INPUT)) {
                     entry = {
                         ...entry,
                         ...item,
@@ -248,6 +246,8 @@ export class BaseLogger<TLevel = number> {
                             transports: unique([...(entry.exclude?.transports ?? []), ...(item.exclude?.transports ?? [])]),
                         },
                     }
+                } else {
+                    entry.context.push(item)
                 }
             } else {
                 entry.context.push(item)
