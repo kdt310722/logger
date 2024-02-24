@@ -280,8 +280,8 @@ export class BaseLogger<TLevel = number> {
     }
 
     protected handleRejections() {
-        process.on('unhandledRejection', (reason, promise) => {
-            throw new UnhandledRejectionError(promise, 'Unhandled rejection:', { cause: reason })
+        process.on('unhandledRejection', (reason) => {
+            throw new UnhandledRejectionError('Unhandled rejection:', { cause: reason })
         })
     }
 }
