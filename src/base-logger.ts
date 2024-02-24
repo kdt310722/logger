@@ -12,6 +12,7 @@ import type { PrettierOptions } from './prettiers'
 import { Prettier } from './prettiers'
 import type { Transport } from './transports'
 import type { LogEntry, LogFilter, LogTransformer } from './types'
+import { mergeEntry } from './utils'
 
 export interface GracefulExitOptions {
     code?: number
@@ -153,10 +154,18 @@ export class BaseLogger<TLevel = number> {
         return process.exit(code)
     }
 
+    public isLevelEnabled(level: number) {
+        return this.isEnabled && level >= this.level
+    }
+
+    public isLoggable(level: number, message?: any, ...context: any[]) {
+        return this.filters.every((filter) => filter({ logger: this, level, message, context }))
+    }
+
     public log(level: TLevel, message?: any, ...context: any[]) {
         const _level = this.levelResolver(level)
 
-        if (!this.isEnabled || _level < this.level || !this.filters.every((filter) => filter({ logger: this, level: _level, message, context }))) {
+        if (!this.isLevelEnabled(_level) || !this.isLoggable(_level, message, ...context)) {
             return
         }
 
@@ -173,41 +182,53 @@ export class BaseLogger<TLevel = number> {
                 continue
             }
 
-            try {
-                transport.write(entry, this)
-            } catch (error) {
-                this.log(this.fatalLevel, new TransportError({ logger: this, transport, entry }, 'Transport error:', { cause: error }), {
-                    [LOG_INPUT]: true,
-                    exclude: { transports: [transport] },
-                })
-            }
+            this.writeToTransport(transport, entry)
         }
     }
 
     public transformEntry(transformers: LogTransformer[], entry: LogEntry) {
+        let logEntry: LogEntry | undefined
+
         for (const transformer of transformers) {
             if (entry.exclude?.transformers?.includes(transformer)) {
                 continue
             }
 
-            try {
-                const transformed = transformer(entry, this)
+            logEntry = this.applyTransformer(transformer, entry)
+        }
 
-                if (!transformed) {
-                    return
-                }
+        return logEntry
+    }
 
-                entry = transformed
-            } catch (error) {
-                throw new TransformError({ logger: this, transformer, entry }, 'Transform error:', { cause: error })
+    public getStream(level: number) {
+        return this.errorLevels[level] ? process.stderr : process.stdout
+    }
+
+    protected applyTransformer(transformer: LogTransformer, entry: LogEntry) {
+        try {
+            const transformed = transformer(entry, this)
+
+            if (!transformed) {
+                return
             }
+
+            entry = transformed
+        } catch (error) {
+            throw new TransformError({ logger: this, transformer, entry }, 'Transform error:', { cause: error })
         }
 
         return entry
     }
 
-    public getStream(level: number) {
-        return this.errorLevels[level] ? process.stderr : process.stdout
+    protected writeToTransport(transport: Transport, entry: LogEntry) {
+        try {
+            transport.write(entry, this)
+        } catch (error) {
+            this.log(this.fatalLevel, new TransportError({ logger: this, transport, entry }, 'Transport error:', { cause: error }), {
+                [LOG_INPUT]: true,
+                exclude: { transports: [transport] },
+            })
+        }
     }
 
     protected write(entry: LogEntry) {
@@ -215,7 +236,7 @@ export class BaseLogger<TLevel = number> {
     }
 
     protected toLogEntry(level: number, message?: any, ...context: any[]) {
-        let entry: LogEntry = { timestamp: new Date(), level, context: [], errors: [], metadata: {} }
+        const entry: LogEntry = { timestamp: new Date(), level, context: [], errors: [], metadata: {} }
 
         if (notUndefined(message)) {
             if (isObject(message) && isKeyOf(message, LOG_LAZY_MESSAGE)) {
@@ -229,6 +250,10 @@ export class BaseLogger<TLevel = number> {
             }
         }
 
+        return this.resolveEntryContext(entry, context)
+    }
+
+    protected resolveEntryContext(entry: LogEntry, context: any[]) {
         for (const item of context) {
             if (item instanceof Error) {
                 entry.errors.push(item)
@@ -236,17 +261,7 @@ export class BaseLogger<TLevel = number> {
                 if (isKeyOf(item, LOG_LAZY_CONTEXT)) {
                     entry.context.push(...item[LOG_LAZY_CONTEXT]())
                 } else if (isKeyOf(item, LOG_INPUT)) {
-                    entry = {
-                        ...entry,
-                        ...item,
-                        context: [...entry.context, ...(item?.context ?? [])],
-                        errors: [...entry.errors, ...(item?.errors ?? [])],
-                        metadata: { ...entry.metadata, ...item.metadata },
-                        exclude: {
-                            transformers: unique([...(entry.exclude?.transformers ?? []), ...(item.exclude?.transformers ?? [])]),
-                            transports: unique([...(entry.exclude?.transports ?? []), ...(item.exclude?.transports ?? [])]),
-                        },
-                    }
+                    entry = mergeEntry(entry, item)
                 } else {
                     entry.context.push(item)
                 }

@@ -1,4 +1,5 @@
 export * from './context'
+export * from './entry'
 export * from './exit'
 export * from './json'
 export * from './loading'
