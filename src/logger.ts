@@ -48,6 +48,9 @@ export class Logger extends BaseLogger<LogLevelType> {
             transformers,
             transports,
             prettier: { ...this.options.prettier, ...prettier },
+            handleExceptions: false,
+            handleRejections: false,
+            handleExit: false,
         })
     }
 
