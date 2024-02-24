@@ -187,7 +187,7 @@ export class BaseLogger<TLevel = number> {
     }
 
     public transformEntry(transformers: LogTransformer[], entry: LogEntry) {
-        let logEntry: LogEntry | undefined
+        let logEntry: LogEntry | undefined = entry
 
         for (const transformer of transformers) {
             if (entry.exclude?.transformers?.includes(transformer)) {
