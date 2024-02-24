@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.0.3
+
+[compare changes](https://github.com/kdt310722/logger/compare/v0.0.2...v0.0.3)
+
+### 🩹 Fixes
+
+- **base-logger:** Missing context item with object type ([0fa0da7](https://github.com/kdt310722/logger/commit/0fa0da7))
+
+### 💅 Refactors
+
+- **base-logger:** Rename and change accessible of some properties ([896a527](https://github.com/kdt310722/logger/commit/896a527))
+- Improve readable ability ([a452de2](https://github.com/kdt310722/logger/commit/a452de2))
+
+### ❤️ Contributors
+
+- Diep Dang <kdt310722@gmail.com>
+
 ## v0.0.2
 
 
