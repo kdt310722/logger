@@ -52,7 +52,7 @@ export class BaseLogger<TLevel = number> {
     protected timerIncrementId = 0
 
     public constructor(options: BaseLoggerOptions<TLevel>) {
-        const { errorLevels, fatalLevel, enabled = true, level = Number.NEGATIVE_INFINITY, name, filters = [], transformers = [], transports = [], prettier = {}, handleExceptions = true, handleRejections = true } = options
+        const { errorLevels, fatalLevel, enabled = true, level = Number.NEGATIVE_INFINITY, name, filters = [], transformers = [], transports = [], prettier = {}, handleExceptions = true, handleRejections = !handleExceptions } = options
 
         this.levelResolver = options.levelResolver ?? ((level: any) => (isNumber(level) ? level : Number.NEGATIVE_INFINITY))
         this.errorLevels = unique([...errorLevels, this.levelResolver(fatalLevel)])
