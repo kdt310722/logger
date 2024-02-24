@@ -22,7 +22,8 @@ export function createPrettyPrintError(options: PrettyPrintErrorOptions = {}) {
     return function prettyPrintError(error: Error, showBadge: boolean = options.badge ?? true) {
         const err = mergeErrorCause ? mergeError(error) : error
 
-        err.stack = (cleanStack ? clean(err.stack) : err.stack) ?? ''
+        err.stack = (err.stack ?? '').replace(err.message, '')
+        err.stack = cleanStack ? clean(err.stack) : err.stack
 
         const errType = `${err.name}${err['code'] ? ` (${err['code']})` : ''}`
         const errTypePrettied = showBadge ? badge(errType) : text(`[${errType}]`)
