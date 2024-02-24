@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.0.5
+
+[compare changes](https://github.com/kdt310722/logger/compare/v0.0.4...v0.0.5)
+
+### 🩹 Fixes
+
+- **pretty print error:** Remove error message from stacktrace ([2d70189](https://github.com/kdt310722/logger/commit/2d70189))
+- **child logger:** Disable handle rejections, exceptions, exit ([cc47def](https://github.com/kdt310722/logger/commit/cc47def))
+
+### 💅 Refactors
+
+- **base logger:** Change default value of handleRejections ([72ffa73](https://github.com/kdt310722/logger/commit/72ffa73))
+- **errors:** Remove promise property from UnhandledRejectionError ([cf2f0f9](https://github.com/kdt310722/logger/commit/cf2f0f9))
+
+### ❤️ Contributors
+
+- Diep Dang <kdt310722@gmail.com>
+
 ## v0.0.4
 
 [compare changes](https://github.com/kdt310722/logger/compare/v0.0.3...v0.0.4)
