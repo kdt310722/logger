@@ -12,20 +12,12 @@ import type { LogEntry } from '../types'
 import { indent } from '../utils'
 import { AsyncTransport, type AsyncTransportOptions } from './async-transport'
 
-export interface TelegramSendMessageOptions {
-    disableWebPagePreview?: boolean
-    allowSendingWithoutReply?: boolean
-    messageThreadId?: number
-    replyToMessageId?: number
-    disableNotification?: boolean
-}
-
 export interface TelegramTransportOptions extends AsyncTransportOptions {
     token: string
     chatId: string | number
     dateFormat?: string
     inspectOptions?: Omit<InspectOptions, 'colors'>
-    sendOptions?: TelegramSendMessageOptions
+    sendOptions?: Record<string, any>
 }
 
 export const TELEGRAM_MAX_MESSAGE_LENGTH = 4096
@@ -38,7 +30,7 @@ export class TelegramTransport extends AsyncTransport {
     protected readonly chatId: string | number
     protected readonly dateFormat: string
     protected readonly inspectOptions: InspectOptions
-    protected readonly sendOptions: TelegramSendMessageOptions
+    protected readonly sendOptions: Record<string, any>
     protected readonly limiter: Bottleneck
     protected readonly sender: Telegraf
 
@@ -64,14 +56,12 @@ export class TelegramTransport extends AsyncTransport {
     }
 
     protected async sendMessage(message: FmtString): Promise<void> {
-        const { disableWebPagePreview = true, allowSendingWithoutReply, messageThreadId, replyToMessageId, disableNotification } = this.sendOptions
-
         await this.sender.telegram.sendMessage(this.chatId, message, {
-            disable_web_page_preview: disableWebPagePreview,
-            allow_sending_without_reply: allowSendingWithoutReply,
-            message_thread_id: messageThreadId,
-            reply_to_message_id: replyToMessageId,
-            disable_notification: disableNotification,
+            ...this.sendOptions,
+            link_preview_options: {
+                is_disabled: this.sendOptions?.link_preview_options?.is_disabled ?? true,
+                ...this.sendOptions?.link_preview_options,
+            },
         })
     }
 
