@@ -56,8 +56,8 @@ devDependencies:
     specifier: ^1.0.0
     version: 1.0.0(typescript@5.3.3)
   '@kdt310722/utils':
-    specifier: ^0.0.5
-    version: 0.0.5
+    specifier: ^0.0.6
+    version: 0.0.6
   '@swc/core':
     specifier: ^1.4.2
     version: 1.4.2
@@ -778,8 +778,8 @@ packages:
       typescript: 5.3.3
     dev: true
 
-  /@kdt310722/utils@0.0.5:
-    resolution: {integrity: sha512-Ubms9OcGaG/BbTrOdyiaDqvWc9Zli2Qbu7a0EAAaynLWjpmNwHm7XFW9f1YJz9tWf3SQqBnVmdPaMzvWYabW1g==}
+  /@kdt310722/utils@0.0.6:
+    resolution: {integrity: sha512-t6Xcqms9NaNr9nSGLqRWJVbT4FoHZaqzTbGn4m2hvUzDnbUGLpoD2nJ8a32pBSzbmvRNRkXx3fK5KXLJiH6DSQ==}
     requiresBuild: true
     dependencies:
       json5: 2.2.3
