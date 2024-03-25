@@ -83,8 +83,8 @@ devDependencies:
     specifier: ^15.2.2
     version: 15.2.2
   npm-check-updates:
-    specifier: ^16.14.17
-    version: 16.14.17
+    specifier: ^16.14.18
+    version: 16.14.18
   only-allow:
     specifier: ^1.2.1
     version: 1.2.1
@@ -92,8 +92,8 @@ devDependencies:
     specifier: ^5.0.5
     version: 5.0.5
   simple-git-hooks:
-    specifier: ^2.11.0
-    version: 2.11.0
+    specifier: ^2.11.1
+    version: 2.11.1
   tsup:
     specifier: ^8.0.2
     version: 8.0.2(@swc/core@1.4.8)(postcss@8.4.35)(typescript@5.4.3)
@@ -1349,6 +1349,10 @@ packages:
 
   /@types/retry@0.12.2:
     resolution: {integrity: sha512-XISRgDJ2Tc5q4TRqvgJtzsRkFYNJzZrhTdtMoGVBttwzzQJkPnS3WWTFc7kuDRoPtPakl+T+OfdEUjYJj7Jbow==}
+    dev: true
+
+  /@types/semver-utils@1.1.3:
+    resolution: {integrity: sha512-T+YwkslhsM+CeuhYUxyAjWm7mJ5am/K10UX40RuA6k6Lc7eGtq8iY2xOzy7Vq0GOqhl/xZl5l2FwURZMTPTUww==}
     dev: true
 
   /@types/semver@7.5.8:
@@ -5254,11 +5258,12 @@ packages:
       npm-normalize-package-bin: 3.0.1
     dev: true
 
-  /npm-check-updates@16.14.17:
-    resolution: {integrity: sha512-ElnDdXKe60f8S6RhzFeaGuH2TFJmt2cU2HjLdowldabdm27nWFCxV2ebeP3xGbQkzp2+RPDQNdW9HqU1lcY8ag==}
+  /npm-check-updates@16.14.18:
+    resolution: {integrity: sha512-9iaRe9ohx9ykdbLjPRIYcq1A0RkrPYUx9HmQK1JIXhfxtJCNE/+497H9Z4PGH6GWRALbz5KF+1iZoySK2uSEpQ==}
     engines: {node: '>=14.14'}
     hasBin: true
     dependencies:
+      '@types/semver-utils': 1.1.3
       chalk: 5.3.0
       cli-table3: 0.6.3
       commander: 10.0.1
@@ -6464,8 +6469,8 @@ packages:
       - supports-color
     dev: true
 
-  /simple-git-hooks@2.11.0:
-    resolution: {integrity: sha512-Wab2uzjGJEL8Kx+2UY8waUSfkiolt2RbaAJWvPCjaAEXrrKoS7JqPk4STiIVl/yt3asZRUzFoK2ryhwvgh5rYw==}
+  /simple-git-hooks@2.11.1:
+    resolution: {integrity: sha512-tgqwPUMDcNDhuf1Xf6KTUsyeqGdgKMhzaH4PAZZuzguOgTl5uuyeYe/8mWgAr6IBxB5V06uqEf6Dy37gIWDtDg==}
     hasBin: true
     requiresBuild: true
     dev: true
