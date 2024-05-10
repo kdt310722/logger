@@ -74,10 +74,10 @@
         "lint-staged": "^15.2.2",
         "npm-check-updates": "^16.14.20",
         "only-allow": "^1.2.1",
-        "rimraf": "^5.0.5",
+        "rimraf": "^5.0.6",
         "simple-git-hooks": "^2.11.1",
         "tsup": "^8.0.2",
-        "tsx": "^4.9.3",
+        "tsx": "^4.9.4",
         "typescript": "^5.4.5",
         "vitest": "^1.6.0"
     },
