@@ -64,7 +64,7 @@
         "@kdt310722/eslint-config": "^0.0.5",
         "@kdt310722/tsconfig": "^1.0.0",
         "@kdt310722/utils": "^0.0.6",
-        "@swc/core": "^1.5.28",
+        "@swc/core": "^1.5.29",
         "@types/bytes": "^3.1.4",
         "@types/node": "^20.14.2",
         "@vitest/coverage-v8": "^1.6.0",
@@ -77,7 +77,7 @@
         "rimraf": "^5.0.7",
         "simple-git-hooks": "^2.11.1",
         "tsup": "^8.1.0",
-        "tsx": "^4.15.2",
+        "tsx": "^4.15.4",
         "typescript": "^5.4.5",
         "vitest": "^1.6.0"
     },
