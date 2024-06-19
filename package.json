@@ -64,7 +64,7 @@
         "@kdt310722/eslint-config": "^0.0.5",
         "@kdt310722/tsconfig": "^1.0.0",
         "@kdt310722/utils": "^0.0.6",
-        "@swc/core": "^1.6.1",
+        "@swc/core": "^1.6.3",
         "@types/bytes": "^3.1.4",
         "@types/node": "^20.14.5",
         "@vitest/coverage-v8": "^1.6.0",
