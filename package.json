@@ -54,7 +54,7 @@
         "log-update": "^6.0.0",
         "merge-error-cause": "^5.0.0",
         "p-queue": "^8.0.1",
-        "pretty-ms": "^9.0.0",
+        "pretty-ms": "^9.1.0",
         "serialize-error": "^11.0.3",
         "telegraf": "^4.16.3"
     },
@@ -64,7 +64,7 @@
         "@kdt310722/eslint-config": "^0.0.5",
         "@kdt310722/tsconfig": "^1.0.0",
         "@kdt310722/utils": "^0.0.6",
-        "@swc/core": "^1.7.0",
+        "@swc/core": "^1.7.1",
         "@types/bytes": "^3.1.4",
         "@types/node": "^20.14.12",
         "@vitest/coverage-v8": "^2.0.4",
