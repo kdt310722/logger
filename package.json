@@ -59,8 +59,8 @@
         "telegraf": "^4.16.3"
     },
     "devDependencies": {
-        "@commitlint/cli": "^19.5.0",
-        "@commitlint/config-conventional": "^19.5.0",
+        "@commitlint/cli": "^19.6.0",
+        "@commitlint/config-conventional": "^19.6.0",
         "@kdt310722/eslint-config": "^0.0.5",
         "@kdt310722/tsconfig": "^1.0.0",
         "@kdt310722/utils": "^0.0.6",
