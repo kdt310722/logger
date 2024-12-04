@@ -92,6 +92,7 @@ export class Logger extends BaseLogger<LogLevelType> {
 
     protected handleExit() {
         process.on('SIGTERM', () => exit(this))
-        process.on('SIGINT', () => exit(this))
+        process.on('SIGQUIT', () => exit(this))
+        process.on('SIGINT', () => exit(this, undefined, undefined, true))
     }
 }
