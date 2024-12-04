@@ -46,7 +46,7 @@
         "prepublishOnly": "pnpm build"
     },
     "peerDependencies": {
-        "@kdt310722/utils": ">=0.0.6"
+        "@kdt310722/utils": ">=0.0.9"
     },
     "dependencies": {
         "bottleneck": "^2.19.5",
@@ -65,7 +65,7 @@
     "devDependencies": {
         "@commitlint/cli": "^19.6.0",
         "@commitlint/config-conventional": "^19.6.0",
-        "@kdt310722/eslint-config": "^0.1.6",
+        "@kdt310722/eslint-config": "^0.1.7",
         "@kdt310722/tsconfig": "^1.0.0",
         "@kdt310722/utils": "^0.0.9",
         "@swc/core": "^1.10.0",
