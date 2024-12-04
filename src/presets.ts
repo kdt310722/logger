@@ -36,7 +36,7 @@ export function createDefaultLogger(options: DefaultLoggerOptions = {}) {
             fileOptions = { ...options.file, level: logger.levelResolver(options.file.level ?? LogLevel.ERROR) }
         }
 
-        logger.addTransport(new FileTransport(path, fileOptions))
+        logger.addTransport(new FileTransport(path, { ...fileOptions, excludeLevels: [LogLevel.NOTICE, ...(fileOptions?.excludeLevels ?? [])] }))
     }
 
     if (options.telegram) {
