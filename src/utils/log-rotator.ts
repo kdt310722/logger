@@ -3,7 +3,7 @@ import { join, parse } from 'node:path'
 import { isDirectory, isWritable } from '@kdt310722/utils/node'
 import { createDeferred } from '@kdt310722/utils/promise'
 import bytes from 'bytes'
-import { type Day, differenceInDays, differenceInHours, differenceInMinutes, differenceInMonths, differenceInWeeks, differenceInYears, format, isMatch, startOfDay, startOfHour, startOfMinute, startOfMonth, startOfWeek, startOfYear } from 'date-fns'
+import { type ContextOptions, type Day, differenceInDays, differenceInHours, differenceInMinutes, differenceInMonths, differenceInWeeks, differenceInYears, format, isMatch, startOfDay, startOfHour, startOfMinute, startOfMonth, startOfWeek, startOfYear } from 'date-fns'
 import fg from 'fast-glob'
 
 export enum LogRotatorFrequency {
@@ -15,7 +15,7 @@ export enum LogRotatorFrequency {
     YEARLY = 'yearly',
 }
 
-export type StartOfFrequencyFn = (date: Date, options?: { weekStartsOn?: Day }) => Date
+export type StartOfFrequencyFn = (date: Date, options?: ContextOptions<Date> & { weekStartsOn?: Day }) => Date
 
 export const START_OF_FREQUENCY: Record<LogRotatorFrequency, StartOfFrequencyFn> = {
     [LogRotatorFrequency.MINUTELY]: startOfMinute,
@@ -60,7 +60,7 @@ export class LogRotator {
         this.output = this.getOutputDirectory(output)
         this.frequency = options.frequency ?? LogRotatorFrequency.DAILY
         this.dateFormat = options.dateFormat ?? 'yyyy-MM-dd'
-        this.maxSize = options.maxSize ? bytes.parse(options.maxSize) : undefined
+        this.maxSize = options.maxSize ? (bytes.parse(options.maxSize) ?? undefined) : undefined
         this.weekStartsOn = options.weekStartsOn ?? 1
         this.extension = options.extension ?? 'log'
 
@@ -135,7 +135,7 @@ export class LogRotator {
         }
 
         const filteredFiles = files.filter(({ filename }) => isMatch(filename, this.dateFormat, { weekStartsOn: this.weekStartsOn }))
-        const sortedFiles = filteredFiles.sort((a, b) => b.modifiedDate - a.modifiedDate)
+        const sortedFiles = filteredFiles.toSorted((a, b) => b.modifiedDate - a.modifiedDate)
 
         return sortedFiles[0]
     }

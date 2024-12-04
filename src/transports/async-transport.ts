@@ -31,7 +31,7 @@ export abstract class AsyncTransport extends Transport {
             clean()
         }
 
-        this.queue.add(async () => this.asyncLog(entry, logger)).finally(onFinally).catch((error) => {
+        this.queue.add(async () => this.asyncLog(entry, logger)).finally(onFinally).catch((error: unknown) => {
             logger.log(logger.fatalLevel, new TransportError({ logger, entry, transport: this }, 'Write to async transport failed:', { cause: error }), {
                 [LOG_INPUT]: true,
                 exclude: { transports: [this] },
