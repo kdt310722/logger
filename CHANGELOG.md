@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.0.6
+
+[compare changes](https://github.com/kdt310722/logger/compare/v0.0.5...v0.0.6)
+
+### 🚀 Enhancements
+
+- Add notice log level ([960c073](https://github.com/kdt310722/logger/commit/960c073))
+- Add exclude log levels in transport ([c940811](https://github.com/kdt310722/logger/commit/c940811))
+- Exclude notice log by default on file transport ([3bfd479](https://github.com/kdt310722/logger/commit/3bfd479))
+
+### 🩹 Fixes
+
+- Telegram transport send options ([83d4af4](https://github.com/kdt310722/logger/commit/83d4af4))
+- Exit ([dac4982](https://github.com/kdt310722/logger/commit/dac4982))
+
+### 🏡 Chore
+
+- Update deps ([5c170dc](https://github.com/kdt310722/logger/commit/5c170dc))
+
+### ❤️ Contributors
+
+- Diep Dang <kdt310722@gmail.com>
+
 ## v0.0.5
 
 [compare changes](https://github.com/kdt310722/logger/compare/v0.0.4...v0.0.5)
