@@ -78,6 +78,10 @@ export class Logger extends BaseLogger<LogLevelType> {
         return this.log(LogLevel.FATAL, message, ...context)
     }
 
+    public notice(message?: any, ...context: any[]) {
+        return this.log(LogLevel.NOTICE, message, ...context)
+    }
+
     public createLoading(options: LoadingOptions = {}) {
         return new Loading(this, options)
     }

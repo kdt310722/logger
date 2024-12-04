@@ -7,6 +7,7 @@ export enum LogLevel {
     WARN = 40,
     ERROR = 50,
     FATAL = 60,
+    NOTICE = 70,
 }
 
 export const LOG_LEVEL_NAMES = <const>{
@@ -16,6 +17,7 @@ export const LOG_LEVEL_NAMES = <const>{
     [LogLevel.WARN]: 'warn',
     [LogLevel.ERROR]: 'error',
     [LogLevel.FATAL]: 'fatal',
+    [LogLevel.NOTICE]: 'notice',
 }
 
 export const LOG_LEVEL_COLORS = <const>{
@@ -25,6 +27,7 @@ export const LOG_LEVEL_COLORS = <const>{
     [LogLevel.WARN]: yellow,
     [LogLevel.ERROR]: red,
     [LogLevel.FATAL]: red,
+    [LogLevel.NOTICE]: blue,
 }
 
 export const LOG_INPUT = Symbol('logger.log-input')
