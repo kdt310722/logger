@@ -6,19 +6,22 @@ import type { LogEntry, LogTransformer } from '../types'
 export interface TransportOptions {
     enabled?: boolean
     level?: number
+    excludeLevels?: number[]
     transformers?: LogTransformer[]
 }
 
 export abstract class Transport {
     protected isEnabled: boolean
     protected level: number
+    protected excludeLevels: number[]
     protected transformers: LogTransformer[]
 
     public constructor(options: TransportOptions = {}) {
-        const { enabled = true, level = Number.NEGATIVE_INFINITY, transformers = [] } = options
+        const { enabled = true, level = Number.NEGATIVE_INFINITY, excludeLevels = [], transformers = [] } = options
 
         this.isEnabled = enabled
         this.level = level
+        this.excludeLevels = excludeLevels
         this.transformers = transformers
     }
 
@@ -43,7 +46,7 @@ export abstract class Transport {
     }
 
     public write(entry: LogEntry, logger: BaseLogger<any>) {
-        if (!this.isEnabled || entry.level < this.level) {
+        if (!this.isEnabled || entry.level < this.level || this.excludeLevels.includes(entry.level)) {
             return
         }
 
