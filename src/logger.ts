@@ -28,6 +28,7 @@ export class Logger extends BaseLogger<LogLevelType> {
             fatalLevel: LogLevel.FATAL,
             levelResolver: (level) => (isNumber(level) ? level : (levels[level] ?? Number.NEGATIVE_INFINITY)),
             prettier: { ...options.prettier, levels, colors: LOG_LEVEL_COLORS },
+            forceExitOnException: !handleExit,
         })
 
         if (handleExit) {

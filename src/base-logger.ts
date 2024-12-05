@@ -30,6 +30,7 @@ export interface BaseLoggerOptions<TLevel = number> {
     transformers?: LogTransformer[]
     transports?: Transport[]
     prettier?: PrettierOptions
+    forceExitOnException?: boolean
     handleExceptions?: boolean
     handleRejections?: boolean
 }
@@ -50,9 +51,10 @@ export class BaseLogger<TLevel = number> {
     protected transformers: LogTransformer[]
     protected transports: Transport[]
     protected timerIncrementId = 0
+    protected forceExitOnException: boolean
 
     public constructor(options: BaseLoggerOptions<TLevel>) {
-        const { errorLevels, fatalLevel, enabled = true, level = Number.NEGATIVE_INFINITY, name, filters = [], transformers = [], transports = [], prettier = {}, handleExceptions = true, handleRejections = !handleExceptions } = options
+        const { errorLevels, fatalLevel, enabled = true, level = Number.NEGATIVE_INFINITY, name, filters = [], transformers = [], transports = [], prettier = {}, handleExceptions = true, handleRejections = !handleExceptions, forceExitOnException = !handleExceptions } = options
 
         this.levelResolver = options.levelResolver ?? ((level: any) => (isNumber(level) ? level : Number.NEGATIVE_INFINITY))
         this.errorLevels = unique([...errorLevels, this.levelResolver(fatalLevel)])
@@ -64,6 +66,7 @@ export class BaseLogger<TLevel = number> {
         this.transformers = unique(transformers)
         this.transports = transports
         this.prettier = new Prettier(prettier)
+        this.forceExitOnException = forceExitOnException
 
         if (handleExceptions) {
             this.handleExceptions()
@@ -275,7 +278,7 @@ export class BaseLogger<TLevel = number> {
 
     protected handleExceptions() {
         process.on('uncaughtException', (error) => {
-            this.exit(isObject(error) && error['exitCode'] ? error['exitCode'] : 1, this.fatalLevel, error)
+            this[this.forceExitOnException ? 'forceExit' : 'exit'](isObject(error) && error['exitCode'] ? error['exitCode'] : 1, this.fatalLevel, error)
         })
     }
 
