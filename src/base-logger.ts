@@ -31,8 +31,6 @@ export interface BaseLoggerOptions<TLevel = number> {
     transports?: Transport[]
     prettier?: PrettierOptions
     forceExitOnException?: boolean
-    handleExceptions?: boolean
-    handleRejections?: boolean
 }
 
 export class BaseLogger<TLevel = number> {
@@ -54,7 +52,7 @@ export class BaseLogger<TLevel = number> {
     protected forceExitOnException: boolean
 
     public constructor(options: BaseLoggerOptions<TLevel>) {
-        const { errorLevels, fatalLevel, enabled = true, level = Number.NEGATIVE_INFINITY, name, filters = [], transformers = [], transports = [], prettier = {}, handleExceptions = true, handleRejections = !handleExceptions, forceExitOnException = !handleExceptions } = options
+        const { errorLevels, fatalLevel, enabled = true, level = Number.NEGATIVE_INFINITY, name, filters = [], transformers = [], transports = [], prettier = {}, forceExitOnException = false } = options
 
         this.levelResolver = options.levelResolver ?? ((level: any) => (isNumber(level) ? level : Number.NEGATIVE_INFINITY))
         this.errorLevels = unique([...errorLevels, this.levelResolver(fatalLevel)])
@@ -67,14 +65,6 @@ export class BaseLogger<TLevel = number> {
         this.transports = transports
         this.prettier = new Prettier(prettier)
         this.forceExitOnException = forceExitOnException
-
-        if (handleExceptions) {
-            this.handleExceptions()
-        }
-
-        if (handleRejections) {
-            this.handleRejections()
-        }
     }
 
     public enable() {
@@ -208,6 +198,18 @@ export class BaseLogger<TLevel = number> {
         return this.errorLevels[level] ? process.stderr : process.stdout
     }
 
+    public handleExceptions() {
+        process.on('uncaughtException', (error) => {
+            this[this.forceExitOnException ? 'forceExit' : 'exit'](isObject(error) && error['exitCode'] ? error['exitCode'] : 1, this.fatalLevel, error)
+        })
+    }
+
+    public handleRejections() {
+        process.on('unhandledRejection', (reason) => {
+            throw new UnhandledRejectionError('Unhandled rejection:', { cause: reason })
+        })
+    }
+
     protected applyTransformer(transformer: LogTransformer, entry: LogEntry) {
         try {
             const transformed = transformer(entry, this)
@@ -275,17 +277,5 @@ export class BaseLogger<TLevel = number> {
         }
 
         return entry
-    }
-
-    protected handleExceptions() {
-        process.on('uncaughtException', (error) => {
-            this[this.forceExitOnException ? 'forceExit' : 'exit'](isObject(error) && error['exitCode'] ? error['exitCode'] : 1, this.fatalLevel, error)
-        })
-    }
-
-    protected handleRejections() {
-        process.on('unhandledRejection', (reason) => {
-            throw new UnhandledRejectionError('Unhandled rejection:', { cause: reason })
-        })
     }
 }

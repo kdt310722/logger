@@ -10,7 +10,6 @@ import { Loading, type LoadingOptions, ProgressBar, type ProgressBarOptions, exi
 
 export type LoggerOptions = Omit<BaseLoggerOptions<LogLevelType>, 'errorLevels' | 'fatalLevel' | 'levelResolver' | 'prettier'> & {
     prettier?: Omit<PrettierOptions, 'levels' | 'colors'>
-    handleExit?: boolean
 }
 
 export interface ChildLoggerOptions extends LoggerOptions {
@@ -24,20 +23,14 @@ export interface ChildLoggerOptions extends LoggerOptions {
 export class Logger extends BaseLogger<LogLevelType> {
     public constructor(protected readonly options: LoggerOptions = {}) {
         const levels = map(LOG_LEVEL_NAMES, (level, name) => [name, level])
-        const { handleExit = true, ...restOptions } = options
 
         super({
-            ...restOptions,
+            ...options,
             errorLevels: [LogLevel.ERROR, LogLevel.FATAL],
             fatalLevel: LogLevel.FATAL,
             levelResolver: (level) => (isNumber(level) ? level : (levels[level] ?? Number.NEGATIVE_INFINITY)),
             prettier: { ...options.prettier, levels, colors: LOG_LEVEL_COLORS },
-            forceExitOnException: !handleExit,
         })
-
-        if (handleExit) {
-            this.handleExit()
-        }
     }
 
     public child(options: ChildLoggerOptions = {}) {
@@ -54,9 +47,6 @@ export class Logger extends BaseLogger<LogLevelType> {
             transports,
             name: this.getName(this.name, name, joinName, nameSeparator),
             prettier: { ...this.options.prettier, ...prettier },
-            handleExceptions: false,
-            handleRejections: false,
-            handleExit: false,
         })
     }
 
@@ -96,7 +86,7 @@ export class Logger extends BaseLogger<LogLevelType> {
         return new ProgressBar(this, total, options)
     }
 
-    protected handleExit() {
+    public handleExit() {
         process.on('SIGTERM', () => exit(this))
         process.on('SIGQUIT', () => exit(this))
         process.on('SIGINT', debounce(() => exit(this, undefined, undefined, true), 100, { immediate: true }))
