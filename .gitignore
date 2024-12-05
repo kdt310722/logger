@@ -57,3 +57,6 @@ test-results
 # Miscellaneous
 *.bak
 *.swp
+
+# Test script
+src/test.ts
