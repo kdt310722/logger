@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.0.7
+
+[compare changes](https://github.com/kdt310722/logger/compare/v0.0.6...v0.0.7)
+
+### 🚀 Enhancements
+
+- Add forceExitOnException option ([1c2185d](https://github.com/kdt310722/logger/commit/1c2185d))
+- Add option to join child name with parent name ([43a667b](https://github.com/kdt310722/logger/commit/43a667b))
+- Add option to show logger name in console ([ee8d2db](https://github.com/kdt310722/logger/commit/ee8d2db))
+- Update ([f4ec9c4](https://github.com/kdt310722/logger/commit/f4ec9c4))
+
+### 🩹 Fixes
+
+- Ctrl c exit ([fd0fff9](https://github.com/kdt310722/logger/commit/fd0fff9))
+
+### 🏡 Chore
+
+- Add test file to gitignore ([563cd42](https://github.com/kdt310722/logger/commit/563cd42))
+
+### ❤️ Contributors
+
+- Diep Dang <kdt310722@gmail.com>
+
 ## v0.0.6
 
 [compare changes](https://github.com/kdt310722/logger/compare/v0.0.5...v0.0.6)
