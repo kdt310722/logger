@@ -1,6 +1,7 @@
 import { isNullish } from '@kdt310722/utils/common'
 import { isNumber } from '@kdt310722/utils/number'
 import { map } from '@kdt310722/utils/object'
+import debounce from 'debounce'
 import { BaseLogger, type BaseLoggerOptions } from './base-logger'
 import { LOG_LEVEL_COLORS, LOG_LEVEL_NAMES, LogLevel } from './constants'
 import type { PrettierOptions } from './prettiers'
@@ -98,7 +99,7 @@ export class Logger extends BaseLogger<LogLevelType> {
     protected handleExit() {
         process.on('SIGTERM', () => exit(this))
         process.on('SIGQUIT', () => exit(this))
-        process.on('SIGINT', () => exit(this, undefined, undefined, true))
+        process.on('SIGINT', debounce(() => exit(this, undefined, undefined, true), 100, { immediate: true }))
     }
 
     protected getName(parentName?: string, childName?: string, joinName = true, nameSeparator = ':') {

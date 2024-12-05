@@ -12,7 +12,7 @@ import type { PrettierOptions } from './prettiers'
 import { Prettier } from './prettiers'
 import type { Transport } from './transports'
 import type { LogEntry, LogFilter, LogTransformer } from './types'
-import { mergeEntry } from './utils'
+import { incrementCtrlCCount, mergeEntry } from './utils'
 
 export interface GracefulExitOptions {
     code?: number
@@ -146,7 +146,8 @@ export class BaseLogger<TLevel = number> {
             maxWaitTime = code?.maxWaitTime
         }
 
-        return gracefulExit(exitCode, maxWaitTime)
+        incrementCtrlCCount()
+        gracefulExit(exitCode, maxWaitTime)
     }
 
     public forceExit(code = 0, level?: TLevel, message?: any, ...context: any[]) {
