@@ -1,3 +1,4 @@
+import { isNullish } from '@kdt310722/utils/common'
 import { isNumber } from '@kdt310722/utils/number'
 import { map } from '@kdt310722/utils/object'
 import { BaseLogger, type BaseLoggerOptions } from './base-logger'
@@ -12,6 +13,8 @@ export type LoggerOptions = Omit<BaseLoggerOptions<LogLevelType>, 'errorLevels' 
 }
 
 export interface ChildLoggerOptions extends LoggerOptions {
+    joinName?: boolean
+    nameSeparator?: string
     mergeFilters?: boolean
     mergeTransformers?: boolean
     mergeTransports?: boolean
@@ -37,7 +40,7 @@ export class Logger extends BaseLogger<LogLevelType> {
     }
 
     public child(options: ChildLoggerOptions = {}) {
-        const { mergeFilters = true, mergeTransformers = true, mergeTransports = true, filters: childFilters = [], transformers: childTransformers = [], transports: childTransports = [], prettier = {}, ...childOptions } = options
+        const { joinName, nameSeparator, name, mergeFilters = true, mergeTransformers = true, mergeTransports = true, filters: childFilters = [], transformers: childTransformers = [], transports: childTransports = [], prettier = {}, ...childOptions } = options
         const filters = mergeFilters ? [...this.filters, ...childFilters] : childFilters
         const transformers = mergeTransformers ? [...this.transformers, ...childTransformers] : childTransformers
         const transports = mergeTransports ? [...this.transports, ...childTransports] : childTransports
@@ -48,6 +51,7 @@ export class Logger extends BaseLogger<LogLevelType> {
             filters,
             transformers,
             transports,
+            name: this.getName(this.name, name, joinName, nameSeparator),
             prettier: { ...this.options.prettier, ...prettier },
             handleExceptions: false,
             handleRejections: false,
@@ -95,5 +99,13 @@ export class Logger extends BaseLogger<LogLevelType> {
         process.on('SIGTERM', () => exit(this))
         process.on('SIGQUIT', () => exit(this))
         process.on('SIGINT', () => exit(this, undefined, undefined, true))
+    }
+
+    protected getName(parentName?: string, childName?: string, joinName = true, nameSeparator = ':') {
+        if (isNullish(parentName)) {
+            return childName
+        }
+
+        return joinName ? [parentName, childName].filter(Boolean).join(nameSeparator) : childName
     }
 }
