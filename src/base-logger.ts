@@ -239,7 +239,7 @@ export class BaseLogger<TLevel = number> {
     }
 
     protected toLogEntry(level: number, message?: any, ...context: any[]) {
-        const entry: LogEntry = { timestamp: new Date(), level, context: [], errors: [], metadata: {} }
+        const entry: LogEntry = { instance: this, timestamp: new Date(), level, context: [], errors: [], metadata: {} }
 
         if (notUndefined(message)) {
             if (isObject(message) && isKeyOf(message, LOG_LAZY_MESSAGE)) {

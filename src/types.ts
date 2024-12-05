@@ -14,6 +14,7 @@ export interface LogEntry {
     context: any[]
     errors: Error[]
     metadata: LogEntryMetadata
+    instance?: BaseLogger<any>
     exclude?: {
         transformers?: LogTransformer[]
         transports?: Transport[]

@@ -2,7 +2,7 @@ import { EOL } from 'node:os'
 import { notNullish } from '@kdt310722/utils/common'
 import { map } from '@kdt310722/utils/object'
 import type { LogEntry } from '../types'
-import { text } from '../utils'
+import { muted, text } from '../utils'
 import { type PrettyPrintContextOptions, createPrettyPrintContext } from './context'
 import { type PrettyPrintErrorOptions, createPrettyPrintError } from './error'
 import { createPrettyPrintLevel } from './level'
@@ -10,6 +10,7 @@ import { type PrettyPrintTimerOptions, createPrettyPrintTimer } from './timer'
 import { createPrettyPrintTimestamp } from './timestamp'
 
 export interface PrettierOptions {
+    showName?: boolean
     levels?: Record<string, number>
     colors?: Record<string, (text: string) => string>
     indent?: number
@@ -19,6 +20,7 @@ export interface PrettierOptions {
 }
 
 export class Prettier {
+    protected readonly showName: boolean
     protected readonly levelNames: Record<number, string>
     protected readonly context: (...context: any[]) => string
     protected readonly error: (error: Error, badge?: boolean) => string
@@ -27,8 +29,9 @@ export class Prettier {
     protected readonly timestamp: (timestamp: Date) => string
 
     public constructor(options: PrettierOptions = {}) {
-        const { levels, colors, indent, context, error, timer } = options
+        const { showName = false, levels, colors, indent, context, error, timer } = options
 
+        this.showName = showName
         this.levelNames = levels ? map(levels, (name, level) => [level, name]) : {}
         this.context = createPrettyPrintContext(context)
         this.error = createPrettyPrintError({ ...error, indent, formatContext: this.context })
@@ -45,6 +48,10 @@ export class Prettier {
         let message = `${this.timestamp(entry.timestamp)} ${text(entry.icon ?? ' ')} ${this.level(entry.level)}`
         let hasMessage = false
         let hasTimer = false
+
+        if (this.showName && notNullish(entry.instance?.name)) {
+            message += muted(` [${entry.instance.name}]`)
+        }
 
         if (notNullish(entry.message)) {
             message += text(` ${entry.message}`)
