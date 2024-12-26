@@ -36,6 +36,8 @@ export const DIFF_BY_FREQUENCY: Record<LogRotatorFrequency, (left: Date, right: 
 }
 
 export interface LogRotatorOptions {
+    createLogDirectoryIfNotExists?: boolean
+    checkLogDirectoryPermissions?: boolean
     frequency?: LogRotatorFrequency
     dateFormat?: string
     maxSize?: string
@@ -57,7 +59,7 @@ export class LogRotator {
     protected writeStream?: NodeJS.WritableStream
 
     public constructor(output: string, options: LogRotatorOptions = {}) {
-        this.output = this.getOutputDirectory(output)
+        this.output = this.getOutputDirectory(output, options.createLogDirectoryIfNotExists, options.checkLogDirectoryPermissions)
         this.frequency = options.frequency ?? LogRotatorFrequency.DAILY
         this.dateFormat = options.dateFormat ?? 'yyyy-MM-dd'
         this.maxSize = options.maxSize ? (bytes.parse(options.maxSize) ?? undefined) : undefined
@@ -158,10 +160,12 @@ export class LogRotator {
         return join(this.output, `*.${this.extension}`)
     }
 
-    protected getOutputDirectory(path: string) {
-        if (!existsSync(path)) {
+    protected getOutputDirectory(path: string, createIfNotExists = true, checkPermissions = true) {
+        if (createIfNotExists && !existsSync(path)) {
             mkdirSync(path, { recursive: true })
-        } else if (!isDirectory(path) || !isWritable(path)) {
+        }
+
+        if (checkPermissions && (!isDirectory(path) || !isWritable(path))) {
             throw new Error(`${path} is not a valid directory`)
         }
 

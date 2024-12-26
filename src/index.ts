@@ -6,5 +6,6 @@ export * from './logger'
 export * from './presets'
 export * from './prettiers'
 export * from './transports'
-export type * from './types'
 export * from './utils'
+
+export type * from './types'

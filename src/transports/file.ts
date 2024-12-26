@@ -13,7 +13,11 @@ export class FileTransport extends AsyncTransport {
     public constructor(logDirectory: string, options: FileTransportOptions = {}) {
         super(options)
 
-        this.rotator = new LogRotator(logDirectory, options)
+        this.rotator = new LogRotator(logDirectory, {
+            ...options,
+            createLogDirectoryIfNotExists: options.createLogDirectoryIfNotExists ?? this.isEnabled,
+            checkLogDirectoryPermissions: options.checkLogDirectoryPermissions ?? this.isEnabled,
+        })
     }
 
     protected async asyncLog(entry: LogEntry, logger: BaseLogger<any>) {
