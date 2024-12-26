@@ -21,6 +21,6 @@ export class FileTransport extends AsyncTransport {
     }
 
     protected async asyncLog(entry: LogEntry, logger: BaseLogger<any>) {
-        await this.rotator.write(`${stringify({ level: logger.prettier.getLevelName(entry.level), ...omit(entry, 'level', 'icon', 'exclude') })}${EOL}`)
+        await this.rotator.write(`${stringify({ level: logger.prettier.getLevelName(entry.level), ...omit(entry, 'level', 'icon', 'exclude', 'instance') })}${EOL}`)
     }
 }
