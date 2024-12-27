@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.0.8
+
+[compare changes](https://github.com/kdt310722/logger/compare/v0.0.7...v0.0.8)
+
+### 🚀 Enhancements
+
+- Add some new options to log rotate ([c376c4f](https://github.com/kdt310722/logger/commit/c376c4f))
+- Support multiple input types ([76342bc](https://github.com/kdt310722/logger/commit/76342bc))
+
+### 🩹 Fixes
+
+- Async transport ([70cdcba](https://github.com/kdt310722/logger/commit/70cdcba))
+
+### 🏡 Chore
+
+- Update deps ([5dd498e](https://github.com/kdt310722/logger/commit/5dd498e))
+- Omit instance on log entry ([8923f94](https://github.com/kdt310722/logger/commit/8923f94))
+
+### ❤️ Contributors
+
+- Diep Dang <kdt310722@gmail.com>
+
 ## v0.0.7
 
 [compare changes](https://github.com/kdt310722/logger/compare/v0.0.6...v0.0.7)
