@@ -1,3 +1,4 @@
+import { omit } from '@kdt310722/utils/object'
 import type { BaseLogger } from '../base-logger'
 import type { LogEntry, LogTransformer } from '../types'
 
@@ -10,7 +11,7 @@ export interface TransformErrorContext {
 export class TransformError extends Error {
     public readonly logger: BaseLogger<any>
     public readonly transformer: LogTransformer
-    public readonly entry: LogEntry
+    public readonly entry: Omit<LogEntry, 'instance'>
     public readonly hideKeys: string[] = ['logger', 'transformer']
 
     public constructor(context: TransformErrorContext, message?: string, options?: ErrorOptions) {
@@ -18,6 +19,6 @@ export class TransformError extends Error {
 
         this.logger = context.logger
         this.transformer = context.transformer
-        this.entry = context.entry
+        this.entry = omit(context.entry, 'instance')
     }
 }
