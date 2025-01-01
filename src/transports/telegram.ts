@@ -4,12 +4,10 @@ import { chunk, ltrim } from '@kdt310722/utils/string'
 import Bottleneck from 'bottleneck'
 import { format } from 'date-fns'
 import { isErrorLike, serializeError } from 'serialize-error'
-import { Telegraf } from 'telegraf'
-import { FmtString, bold, fmt, join, pre } from 'telegraf/format'
 import type { BaseLogger } from '../base-logger'
 import { resolveInspectOptions } from '../prettiers'
 import type { LogEntry } from '../types'
-import { indent } from '../utils'
+import { escapeMarkdownV2, indent } from '../utils'
 import { AsyncTransport, type AsyncTransportOptions } from './async-transport'
 
 export interface TelegramTransportOptions extends AsyncTransportOptions {
@@ -27,78 +25,80 @@ export const TELEGRAM_MAX_MESSAGES_PER_SECOND = 30
 export const TELEGRAM_MAX_MESSAGES_PER_MINUTE_PER_CHAT = 20
 
 export class TelegramTransport extends AsyncTransport {
+    protected readonly token: string
     protected readonly chatId: string | number
     protected readonly dateFormat: string
     protected readonly inspectOptions: InspectOptions
     protected readonly sendOptions: Record<string, any>
     protected readonly limiter: Bottleneck
-    protected readonly sender: Telegraf
 
     public constructor(options: TelegramTransportOptions) {
         super(options)
 
         const { token, chatId, dateFormat = 'yyyy-MM-dd HH:mm:ss', inspectOptions = {}, sendOptions = {} } = options
 
+        this.token = token
         this.chatId = chatId
         this.dateFormat = dateFormat
         this.inspectOptions = resolveInspectOptions({ ...inspectOptions, colors: false })
         this.sendOptions = sendOptions
         this.limiter = this.createLimiter()
-        this.sender = new Telegraf(token)
     }
 
     protected async asyncLog(entry: LogEntry, logger: BaseLogger<any>) {
-        const messages = this.chunkMessage(this.getMessage(entry, logger))
+        const messages = this.getMessages(entry, logger)
 
         for (const message of messages) {
             await this.limiter.schedule(async () => this.sendMessage(message))
         }
     }
 
-    protected async sendMessage(message: FmtString): Promise<void> {
-        await this.sender.telegram.sendMessage(this.chatId, message, {
+    protected async sendMessage(message: string): Promise<void> {
+        const url = `https://api.telegram.org/bot${this.token}/sendMessage`
+
+        const payload = {
+            chat_id: this.chatId,
+            text: message,
+            parse_mode: 'MarkdownV2',
+            link_preview_options: { is_disabled: true, ...this.sendOptions?.link_preview_options },
             ...this.sendOptions,
-            link_preview_options: {
-                is_disabled: this.sendOptions?.link_preview_options?.is_disabled ?? true,
-                ...this.sendOptions?.link_preview_options,
-            },
-        })
-    }
-
-    protected chunkMessage(message: FmtString) {
-        if (!message.entities) {
-            return [message]
         }
 
-        const messages: FmtString[] = []
-        const overflow = message.entities.findIndex((e) => e.offset + e.length > TELEGRAM_MAX_MESSAGE_LENGTH)
+        const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+        const body = await response.json()
 
-        if (overflow === -1) {
-            return [message]
+        if (response.status !== 200 || !body.ok) {
+            throw Object.assign(new Error(`Failed to send message to Telegram`), {
+                status: response.status,
+                statusText: response.statusText,
+                response: await response.text(),
+            })
         }
-
-        const offset = message.entities[overflow].offset
-        const entities = message.entities.splice(0, overflow)
-        const newEntities = message.entities.map((e) => ({ ...e, offset: e.offset - offset }))
-
-        messages.push(new FmtString(message.text.slice(0, offset), entities))
-        messages.push(...this.chunkMessage(new FmtString(message.text.slice(offset), newEntities)))
-
-        return messages
     }
 
-    protected getMessage(entry: LogEntry, logger: BaseLogger<any>) {
-        const message = [
-            this.formatMessage('• Level: ', logger.prettier.getLevelName(entry.level).toUpperCase()),
-            this.formatMessage('• Time: ', format(entry.timestamp, this.dateFormat)),
-        ]
+    protected getMessages(entry: LogEntry, logger: BaseLogger<any>) {
+        let message = ''
+
+        message += `• Level: *${escapeMarkdownV2(logger.prettier.getLevelName(entry.level).toUpperCase())}*\n`
+        message += `• Time: *${escapeMarkdownV2(format(entry.timestamp, this.dateFormat))}*\n`
 
         if (logger.name) {
-            message.push(this.formatMessage('• Name: ', logger.name))
+            message += `• Name: *${escapeMarkdownV2(logger.name)}*\n`
         }
 
+        const extraMessages: string[] = []
+
         if (entry.message?.length) {
-            message.push(this.formatMessage('• Message: ', entry.message))
+            const textLeft = TELEGRAM_MAX_MESSAGE_LENGTH - message.length
+            const prefix = '• Message: '
+            const msg = escapeMarkdownV2(entry.message)
+
+            if (msg.length + prefix.length + 3 < textLeft) {
+                message += `${prefix}*${msg}*`
+            } else {
+                extraMessages.push(prefix)
+                extraMessages.push(...chunk(msg, TELEGRAM_MAX_MESSAGE_LENGTH))
+            }
         }
 
         if (entry.context.length > 0) {
@@ -108,31 +108,38 @@ export class TelegramTransport extends AsyncTransport {
                 context.push(this.formatContextItem(items))
             }
 
-            message.push(this.formatMessage('• Context:\n', JSON.stringify(context, null, 2), pre('json')))
+            const textLeft = TELEGRAM_MAX_MESSAGE_LENGTH - message.length
+            const contextMessage = escapeMarkdownV2(JSON.stringify(context, null, 2).replace(String.raw`\n`, '\n'))
+            const prefix = '• Context:\n'
+
+            if (contextMessage.length + prefix.length + 12 < textLeft) {
+                message += `${prefix}\`\`\`json\n${contextMessage}\n\`\`\``
+            } else {
+                extraMessages.push(prefix)
+                extraMessages.push(...chunk(contextMessage, TELEGRAM_MAX_MESSAGE_LENGTH - 8).map((msg) => `\`\`\`\n${msg}\n\`\`\``))
+            }
         }
 
         if (entry.errors?.length) {
             for (const error of entry.errors) {
-                message.push(this.formatMessage('• Error:\n', this.formatError(error), pre('json')))
+                const textLeft = TELEGRAM_MAX_MESSAGE_LENGTH - message.length
+                const errorMsg = escapeMarkdownV2(this.formatError(error))
+                const prefix = '• Error:\n'
+
+                if (errorMsg.length + prefix.length + 12 < textLeft) {
+                    message += `${prefix}\`\`\`json\n${errorMsg}\n\`\`\``
+                } else {
+                    extraMessages.push(prefix)
+                    extraMessages.push(...chunk(errorMsg, TELEGRAM_MAX_MESSAGE_LENGTH - 8).map((msg) => `\`\`\`\n${msg}\n\`\`\``))
+                }
             }
         }
 
-        return join(message, '\n')
-    }
-
-    protected formatMessage(key: string, message: string, formatter: (message: string) => FmtString = bold) {
-        const length = key.length + message.length
-        const limit = TELEGRAM_MAX_MESSAGE_LENGTH
-
-        if (length > limit) {
-            return fmt(key, join(chunk(message, limit - key.length).map((m) => this.formatMessage('', m, formatter))))
-        }
-
-        return fmt(key, formatter(message))
+        return [message, ...extraMessages]
     }
 
     protected formatError(error: any) {
-        return JSON.stringify(serializeError(error), null, 2)
+        return JSON.stringify(serializeError(error), null, 2).replace(String.raw`\n`, '\n')
     }
 
     protected formatErrorValue(value: unknown) {
@@ -145,7 +152,7 @@ export class TelegramTransport extends AsyncTransport {
 
     protected formatContextItem(item: unknown) {
         if (isErrorLike(item)) {
-            return JSON.stringify(serializeError(item))
+            return JSON.stringify(serializeError(item)).replace(String.raw`\n`, '\n')
         }
 
         return this.inspect(item, 4)

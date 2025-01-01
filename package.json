@@ -60,8 +60,7 @@
         "merge-error-cause": "^5.0.0",
         "p-queue": "^8.0.1",
         "pretty-ms": "^9.2.0",
-        "serialize-error": "^11.0.3",
-        "telegraf": "^4.16.3"
+        "serialize-error": "^11.0.3"
     },
     "devDependencies": {
         "@commitlint/cli": "^19.6.1",
