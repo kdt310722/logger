@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.0.9
+
+[compare changes](https://github.com/kdt310722/logger/compare/v0.0.8...v0.0.9)
+
+### 🚀 Enhancements
+
+- New telegram sender ([187a19a](https://github.com/kdt310722/logger/commit/187a19a))
+
+### 🏡 Chore
+
+- Update deps ([9e626e5](https://github.com/kdt310722/logger/commit/9e626e5))
+
+### ❤️ Contributors
+
+- Diep Dang <kdt310722@gmail.com>
+
 ## v0.0.8
 
 [compare changes](https://github.com/kdt310722/logger/compare/v0.0.7...v0.0.8)
