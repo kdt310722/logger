@@ -58,8 +58,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0(typescript@5.7.2)
       '@kdt310722/utils':
-        specifier: ^0.0.12
-        version: 0.0.12
+        specifier: ^0.0.13
+        version: 0.0.13
       '@swc/core':
         specifier: ^1.10.4
         version: 1.10.4
@@ -1297,8 +1297,8 @@ packages:
     peerDependencies:
       typescript: '>=5.0'
 
-  '@kdt310722/utils@0.0.12':
-    resolution: {integrity: sha512-Gzw8FfXqPl//GXPqWfBz6vEB2BpcYcvzZDxJ5yElJjv9YX+I0Q2ivEY1ulHWFn/NZkZzsMkbkik7hokk6kD9Kw==}
+  '@kdt310722/utils@0.0.13':
+    resolution: {integrity: sha512-LfwDHj/RVr5DvWU/7kr7dGQgspcqbB+501aWYciZIWRLEvZo665wsR4H/LxZX4phxgT/XYXkro0Q6knZv1Hzyw==}
     engines: {node: '>=22.12.0'}
 
   '@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1':
@@ -3811,6 +3811,10 @@ packages:
     resolution: {integrity: sha512-2G2y++21dhj2R7iHAdd0FIzjGwuKZld+7Pl/bTU6YIkrC2ZMbVUjm+luj6A6V34Rv9XfKJDKpTWu9W4Gse1D9g==}
     engines: {node: '>=14.16'}
 
+  serialize-error@12.0.0:
+    resolution: {integrity: sha512-ZYkZLAvKTKQXWuh5XpBw7CdbSzagarX39WyZ2H07CDLC5/KfsRGlIXV8d4+tfqX1M7916mRqR1QfNHSij+c9Pw==}
+    engines: {node: '>=18'}
+
   set-error-class@3.0.0:
     resolution: {integrity: sha512-a2Ham0lVgvzp14cm2Z2LM2Ae1HzxI8G+LX6Rv+eTVzM5+pfPU7UtJBSOXktxoBlqlmaPsZmZRR84qY+CoHt6bg==}
     engines: {node: '>=18.18.0'}
@@ -4129,6 +4133,10 @@ packages:
   type-fest@2.19.0:
     resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
     engines: {node: '>=12.20'}
+
+  type-fest@4.31.0:
+    resolution: {integrity: sha512-yCxltHW07Nkhv/1F6wWBr8kz+5BGMfP+RbRSYFnegVb0qV/UMT0G0ElBloPVerqn4M2ZV80Ir1FtCcYv1cT6vQ==}
+    engines: {node: '>=16'}
 
   typed-array-buffer@1.0.3:
     resolution: {integrity: sha512-nAYYwfY3qnzX30IkA6AQZjVbtK6duGontcQm1WSG1MD94YLqK0515GNApXkoxKOWMusVssAHWLh9SeaoefYFGw==}
@@ -5595,11 +5603,11 @@ snapshots:
     dependencies:
       typescript: 5.7.2
 
-  '@kdt310722/utils@0.0.12':
+  '@kdt310722/utils@0.0.13':
     dependencies:
       json5: 2.2.3
       p-retry: 6.2.1
-      serialize-error: 11.0.3
+      serialize-error: 12.0.0
 
   '@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1':
     dependencies:
@@ -8423,6 +8431,10 @@ snapshots:
     dependencies:
       type-fest: 2.19.0
 
+  serialize-error@12.0.0:
+    dependencies:
+      type-fest: 4.31.0
+
   set-error-class@3.0.0:
     dependencies:
       normalize-exception: 3.0.0
@@ -8799,6 +8811,8 @@ snapshots:
   type-fest@0.8.1: {}
 
   type-fest@2.19.0: {}
+
+  type-fest@4.31.0: {}
 
   typed-array-buffer@1.0.3:
     dependencies:
