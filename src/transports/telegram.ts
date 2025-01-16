@@ -102,21 +102,26 @@ export class TelegramTransport extends AsyncTransport {
         }
 
         if (entry.context.length > 0) {
-            const context: string[] = []
+            let hasContextPrefix = false
 
-            for (const items of entry.context) {
-                context.push(this.formatContextItem(items))
-            }
+            for (const item of entry.context) {
+                const textLeft = TELEGRAM_MAX_MESSAGE_LENGTH - message.length
+                const contextMsg = escapeMarkdownV2(this.formatContextItem(item))
+                const prefix = '• Context:\n'
 
-            const textLeft = TELEGRAM_MAX_MESSAGE_LENGTH - message.length
-            const contextMessage = escapeMarkdownV2(JSON.stringify(context, null, 2).replace(String.raw`\n`, '\n'))
-            const prefix = '• Context:\n'
+                if (contextMsg.length + (hasContextPrefix ? 0 : prefix.length) + 13 < textLeft) {
+                    message += `${hasContextPrefix ? '' : prefix}\`\`\`json\n${contextMsg}\n\`\`\`\n`
+                } else {
+                    if (!hasContextPrefix) {
+                        extraMessages.push(prefix)
+                    }
 
-            if (contextMessage.length + prefix.length + 12 < textLeft) {
-                message += `${prefix}\`\`\`json\n${contextMessage}\n\`\`\``
-            } else {
-                extraMessages.push(prefix)
-                extraMessages.push(...chunk(contextMessage, TELEGRAM_MAX_MESSAGE_LENGTH - 8).map((msg) => `\`\`\`\n${msg}\n\`\`\``))
+                    extraMessages.push(...chunk(contextMsg, TELEGRAM_MAX_MESSAGE_LENGTH - 8).map((msg) => `\`\`\`\n${msg}\n\`\`\``))
+                }
+
+                if (!hasContextPrefix) {
+                    hasContextPrefix = true
+                }
             }
         }
 
@@ -152,10 +157,10 @@ export class TelegramTransport extends AsyncTransport {
 
     protected formatContextItem(item: unknown) {
         if (isErrorLike(item)) {
-            return JSON.stringify(serializeError(item)).replace(String.raw`\n`, '\n')
+            return JSON.stringify(serializeError(item), null, 2)
         }
 
-        return this.inspect(item, 4).replace(String.raw`\n`, '\n')
+        return this.inspect(item, 2)
     }
 
     protected inspect(param: unknown, indentSpace: number) {
