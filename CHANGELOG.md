@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.0.10
+
+[compare changes](https://github.com/kdt310722/logger/compare/v0.0.9...v0.0.10)
+
+### 🩹 Fixes
+
+- **telegram transport:** Line break ([8d48b36](https://github.com/kdt310722/logger/commit/8d48b36))
+- **telegram transport:** Line break ([f4ba8c7](https://github.com/kdt310722/logger/commit/f4ba8c7))
+
+### 🏡 Chore
+
+- Update deps ([d0b20c8](https://github.com/kdt310722/logger/commit/d0b20c8))
+
+### ❤️ Contributors
+
+- Diep Dang <kdt310722@gmail.com>
+
 ## v0.0.9
 
 [compare changes](https://github.com/kdt310722/logger/compare/v0.0.8...v0.0.9)
