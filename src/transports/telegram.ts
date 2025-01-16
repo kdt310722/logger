@@ -94,10 +94,10 @@ export class TelegramTransport extends AsyncTransport {
             const msg = escapeMarkdownV2(entry.message)
 
             if (msg.length + prefix.length + 3 < textLeft) {
-                message += `${prefix}*${msg}*`
+                message += `${prefix}*${msg}*\n`
             } else {
-                extraMessages.push(prefix)
-                extraMessages.push(...chunk(msg, TELEGRAM_MAX_MESSAGE_LENGTH))
+                extraMessages.push(`${prefix}\n`)
+                extraMessages.push(...chunk(`${msg}\n`, TELEGRAM_MAX_MESSAGE_LENGTH))
             }
         }
 
