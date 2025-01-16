@@ -6,6 +6,7 @@ import { gracefulExit } from '@kdt310722/utils/node'
 import { isNumber } from '@kdt310722/utils/number'
 import { isKeyOf, isObject } from '@kdt310722/utils/object'
 import { isString } from '@kdt310722/utils/string'
+import stripAnsi from 'strip-ansi'
 import { LOG_INPUT, LOG_LAZY_CONTEXT, LOG_LAZY_MESSAGE } from './constants'
 import { TransformError, TransportError, UnhandledRejectionError } from './errors'
 import type { PrettierOptions } from './prettiers'
@@ -227,6 +228,8 @@ export class BaseLogger<TLevel = number> {
     }
 
     protected writeToTransport(transport: Transport, entry: LogEntry) {
+        entry.message = entry.message ? stripAnsi(entry.message) : entry.message
+
         try {
             transport.write(entry, this)
         } catch (error) {
