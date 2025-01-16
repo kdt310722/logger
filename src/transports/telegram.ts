@@ -144,23 +144,15 @@ export class TelegramTransport extends AsyncTransport {
     }
 
     protected formatError(error: any) {
-        return JSON.stringify(serializeError(error), null, 2).replace(String.raw`\n`, '\n')
-    }
-
-    protected formatErrorValue(value: unknown) {
-        if (typeof value === 'symbol' || typeof value === 'function' || typeof value === 'object') {
-            return this.inspect(value, 6)
-        }
-
-        return String(value)
+        return JSON.stringify(serializeError(error), null, 2).replaceAll(String.raw`\n`, '\n')
     }
 
     protected formatContextItem(item: unknown) {
         if (isErrorLike(item)) {
-            return JSON.stringify(serializeError(item), null, 2)
+            return this.formatError(item)
         }
 
-        return this.inspect(item, 2)
+        return this.inspect(item, 2).replaceAll(String.raw`\n`, '\n')
     }
 
     protected inspect(param: unknown, indentSpace: number) {
