@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.0.12
+
+[compare changes](https://github.com/kdt310722/logger/compare/v0.0.11...v0.0.12)
+
+### 💅 Refactors
+
+- **telegram transport:** Context format ([8630414](https://github.com/kdt310722/logger/commit/8630414))
+- **telegram transport:** Add milliseconds to default date format ([9c7d9e4](https://github.com/kdt310722/logger/commit/9c7d9e4))
+- **telegram transport:** Context and error format ([79de061](https://github.com/kdt310722/logger/commit/79de061))
+
+### ❤️ Contributors
+
+- Diep Dang <kdt310722@gmail.com>
+
 ## v0.0.11
 
 [compare changes](https://github.com/kdt310722/logger/compare/v0.0.10...v0.0.11)
