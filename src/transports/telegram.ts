@@ -35,7 +35,7 @@ export class TelegramTransport extends AsyncTransport {
     public constructor(options: TelegramTransportOptions) {
         super(options)
 
-        const { token, chatId, dateFormat = 'yyyy-MM-dd HH:mm:ss', inspectOptions = {}, sendOptions = {} } = options
+        const { token, chatId, dateFormat = 'yyyy-MM-dd HH:mm:ss.SSS', inspectOptions = {}, sendOptions = {} } = options
 
         this.token = token
         this.chatId = chatId
