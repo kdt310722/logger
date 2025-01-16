@@ -155,7 +155,7 @@ export class TelegramTransport extends AsyncTransport {
             return JSON.stringify(serializeError(item)).replace(String.raw`\n`, '\n')
         }
 
-        return this.inspect(item, 4)
+        return this.inspect(item, 4).replace(String.raw`\n`, '\n')
     }
 
     protected inspect(param: unknown, indentSpace: number) {
