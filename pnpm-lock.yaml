@@ -61,8 +61,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0(typescript@5.7.3)
       '@kdt310722/utils':
-        specifier: ^0.0.15
-        version: 0.0.15
+        specifier: ^0.0.16
+        version: 0.0.16
       '@swc/core':
         specifier: ^1.10.14
         version: 1.10.14
@@ -1305,9 +1305,9 @@ packages:
     peerDependencies:
       typescript: '>=5.0'
 
-  '@kdt310722/utils@0.0.15':
-    resolution: {integrity: sha512-Gtz2U7tu/6nmWzdA/7LCVmFmuMceXGGO+8JBQD10e+4EGwAqufnf//f7XWZkoK/lExj1t0KcvcRiqyqs+WtTuQ==}
-    engines: {node: '>=22.13.0'}
+  '@kdt310722/utils@0.0.16':
+    resolution: {integrity: sha512-p9bfRxUoz6Tio16bSEKJsC5ea2mL6Dnfcy4Cubk08b5EtTGKCsWJkuDJztqpHJjxuDyxu2dgkviHGIimaFmssw==}
+    engines: {node: '>=22.13.1'}
 
   '@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1':
     resolution: {integrity: sha512-54/JRvkLIzzDWshCWfuhadfrfZVPiElY8Fcgmg1HroEly/EDSszzhBAsarCux+D/kOslTRquNzuyGSmUSTTHGg==}
@@ -5618,7 +5618,7 @@ snapshots:
     dependencies:
       typescript: 5.7.3
 
-  '@kdt310722/utils@0.0.15':
+  '@kdt310722/utils@0.0.16':
     dependencies:
       json5: 2.2.3
       p-retry: 6.2.1
