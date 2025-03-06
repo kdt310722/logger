@@ -2,7 +2,7 @@
     "name": "@kdt310722/logger",
     "type": "module",
     "version": "0.0.12",
-    "packageManager": "pnpm@9.15.6",
+    "packageManager": "pnpm@9.15.7",
     "description": "A simple NodeJS logger library",
     "author": "Diep Dang <kdt310722@gmail.com>",
     "license": "MIT",
@@ -72,7 +72,7 @@
         "@swc/core": "^1.11.7",
         "@types/bytes": "^3.1.5",
         "@types/node": "^22.13.9",
-        "@vitest/coverage-v8": "^3.0.7",
+        "@vitest/coverage-v8": "^3.0.8",
         "changelogen": "^0.6.1",
         "eslint": "^9.21.0",
         "execa": "^9.5.2",
@@ -84,7 +84,7 @@
         "tsup": "^8.4.0",
         "tsx": "^4.19.3",
         "typescript": "^5.8.2",
-        "vitest": "^3.0.7"
+        "vitest": "^3.0.8"
     },
     "commitlint": {
         "extends": "@commitlint/config-conventional"
