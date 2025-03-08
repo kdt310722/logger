@@ -71,7 +71,7 @@
         "@kdt310722/utils": "^0.0.17",
         "@swc/core": "^1.11.8",
         "@types/bytes": "^3.1.5",
-        "@types/node": "^22.13.9",
+        "@types/node": "^22.13.10",
         "@vitest/coverage-v8": "^3.0.8",
         "changelogen": "^0.6.1",
         "eslint": "^9.22.0",
