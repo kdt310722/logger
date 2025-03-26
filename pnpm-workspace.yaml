@@ -1,0 +1,4 @@
+ignoredBuiltDependencies:
+    - '@kdt310722/eslint-config'
+onlyBuiltDependencies:
+    - esbuild
