@@ -74,7 +74,7 @@
         "@types/node": "^22.14.0",
         "@vitest/coverage-v8": "^3.1.1",
         "changelogen": "^0.6.1",
-        "eslint": "^9.23.0",
+        "eslint": "^9.24.0",
         "execa": "^9.5.2",
         "lint-staged": "^15.5.0",
         "npm-check-updates": "^17.1.16",
@@ -83,7 +83,7 @@
         "simple-git-hooks": "^2.12.1",
         "tsup": "^8.4.0",
         "tsx": "^4.19.3",
-        "typescript": "^5.8.2",
+        "typescript": "^5.8.3",
         "vitest": "^3.1.1"
     },
     "commitlint": {
