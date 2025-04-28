@@ -2,7 +2,7 @@
     "name": "@kdt310722/logger",
     "type": "module",
     "version": "0.0.12",
-    "packageManager": "pnpm@10.9.0",
+    "packageManager": "pnpm@10.10.0",
     "description": "A simple NodeJS logger library",
     "author": "Diep Dang <kdt310722@gmail.com>",
     "license": "MIT",
