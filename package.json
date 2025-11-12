@@ -30,7 +30,7 @@
         "access": "public"
     },
     "engines": {
-        "node": ">=22.15.0"
+        "node": ">=24.11.1"
     },
     "scripts": {
         "dev": "vitest watch --typecheck",
