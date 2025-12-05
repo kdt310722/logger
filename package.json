@@ -2,7 +2,7 @@
     "name": "@kdt310722/logger",
     "type": "module",
     "version": "0.0.12",
-    "packageManager": "pnpm@10.11.0",
+    "packageManager": "pnpm@10.24.0",
     "description": "A simple NodeJS logger library",
     "author": "Diep Dang <kdt310722@gmail.com>",
     "license": "MIT",
@@ -30,7 +30,7 @@
         "access": "public"
     },
     "engines": {
-        "node": ">=22.15.0"
+        "node": ">=22.21.1"
     },
     "scripts": {
         "dev": "vitest watch --typecheck",
@@ -46,45 +46,45 @@
         "prepublishOnly": "pnpm build"
     },
     "peerDependencies": {
-        "@kdt310722/utils": ">=0.0.17"
+        "@kdt310722/utils": ">=0.0.19"
     },
     "dependencies": {
         "bottleneck": "^2.19.5",
         "bytes": "^3.1.2",
-        "clean-stack": "^5.2.0",
+        "clean-stack": "^5.3.0",
         "colorette": "^2.0.20",
         "date-fns": "^4.1.0",
         "debounce": "^2.2.0",
         "fast-glob": "^3.3.3",
         "log-update": "^6.1.0",
         "merge-error-cause": "^5.0.2",
-        "p-queue": "^8.1.0",
-        "pretty-ms": "^9.2.0",
+        "p-queue": "^8.1.1",
+        "pretty-ms": "^9.3.0",
         "serialize-error": "^12.0.0",
-        "strip-ansi": "^7.1.0"
+        "strip-ansi": "^7.1.2"
     },
     "devDependencies": {
-        "@commitlint/cli": "^20.0.0",
-        "@commitlint/config-conventional": "^20.0.0",
-        "@kdt310722/eslint-config": "^0.1.9",
+        "@commitlint/cli": "^20.2.0",
+        "@commitlint/config-conventional": "^20.2.0",
+        "@kdt310722/eslint-config": "^0.2.0",
         "@kdt310722/tsconfig": "^1.0.0",
-        "@kdt310722/utils": "^0.0.17",
-        "@swc/core": "^1.11.22",
+        "@kdt310722/utils": "^0.0.19",
+        "@swc/core": "^1.15.3",
         "@types/bytes": "^3.1.5",
-        "@types/node": "^24.9.1",
-        "@vitest/coverage-v8": "^4.0.1",
-        "changelogen": "^0.6.1",
-        "eslint": "^9.26.0",
-        "execa": "^9.5.3",
-        "lint-staged": "^16.0.0",
-        "npm-check-updates": "^19.1.1",
-        "only-allow": "^1.2.1",
-        "rimraf": "^6.0.1",
-        "simple-git-hooks": "^2.13.0",
-        "tsup": "^8.4.0",
-        "tsx": "^4.19.4",
-        "typescript": "^5.8.3",
-        "vitest": "^4.0.1"
+        "@types/node": "^24.10.1",
+        "@vitest/coverage-v8": "^4.0.15",
+        "changelogen": "^0.6.2",
+        "eslint": "^9.39.1",
+        "execa": "^9.6.1",
+        "lint-staged": "^16.2.7",
+        "npm-check-updates": "^19.1.2",
+        "only-allow": "^1.2.2",
+        "rimraf": "^6.1.2",
+        "simple-git-hooks": "^2.13.1",
+        "tsup": "^8.5.1",
+        "tsx": "^4.21.0",
+        "typescript": "^5.9.3",
+        "vitest": "^4.0.15"
     },
     "commitlint": {
         "extends": "@commitlint/config-conventional"
