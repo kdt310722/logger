@@ -60,7 +60,7 @@
         "merge-error-cause": "^5.0.2",
         "p-queue": "^8.1.0",
         "pretty-ms": "^9.2.0",
-        "serialize-error": "^12.0.0",
+        "serialize-error": "^13.0.1",
         "strip-ansi": "^7.1.0"
     },
     "devDependencies": {
